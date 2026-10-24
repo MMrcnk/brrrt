@@ -1,39 +1,28 @@
 # brrrt
 
-Gra 3D w przeglądarce w stylu Smashy Road: latasz A-10 Thunderbolt II nad pustynią (wydmy, góry, oazy) i niszczysz czołgi T-55. Silnik: three.js r128 (CDN).
+Gra 3D w przeglądarce w stylu Smashy Road: A-10C Thunderbolt II nad ogromną pustynią poluje na czołgi T-55. Silnik: three.js r128 (CDN). Tylko w poziomie.
 
 ## Sterowanie
 
 | Telefon | Klawiatura | Akcja |
 |---|---|---|
-| Joystick (lewa połowa ekranu) | Strzałki / WASD | Kierunek lotu |
-| Duży przycisk (prawy dół) | Spacja | Ogień (przytrzymaj) |
-| ZMIEŃ | Q / E | Minigun GAU-8 ↔ rakiety Hydra 70 |
+| Joystick (lewa połowa ekranu) | WASD / strzałki | Kierunek lotu |
+| Joystick do oporu | — | Dopalanie |
+| Joystick w przeciwną stronę | — | Przewrót (Immelmann) |
+| Duży przycisk | Spacja | Ogień |
+| ZMIEŃ | Q / E | Minigun → Hydra → Maverick |
 | Pauza | P | Pauza |
-| Joystick do końca | — | Przyspieszenie |
-| Joystick w przeciwną stronę | — | Przewrót (Immelmann) i lot w nową stronę |
 
-## Zasady
+## Broń
 
-- 100 pkt za każdy zniszczony T-55
-- kolejne zniszczenia w ciągu 4 s → combo do x5
-- rekord zapisuje się lokalnie w przeglądarce
+| Broń | Działanie |
+|---|---|
+| GAU-8/A | Seria w celownik na ziemi; trafienie obok czołgu też zadaje obrażenia |
+| Hydra 70 | Duży obszar rażenia, odnawiają się |
+| AGM-65 Maverick | 8 sztuk ze zrzutu (skrzynka na spadochronie, zielony dym). Strzela tylko z namierzeniem: cel w stożku 90° przed samolotem |
+
+Czołgi strzelają do samolotu — pasek KADŁUB u góry.
 
 ## Uruchomienie
 
-Jeden plik `index.html`, bez budowania. three.js ładuje się z cdnjs.
-
-- lokalnie: otwórz `index.html` w przeglądarce
-- GitHub Pages: Settings → Pages → Source: `main` / root
-
-Na iPhonie: Safari → Udostępnij → „Do ekranu początkowego”, gra uruchomi się na pełnym ekranie.
-
-## Struktura kodu (`index.html`)
-
-- **Generowanie świata** — góry, oazy, wydmy, drogi, kaktusy (ziarno losowe stałe → ta sama mapa)
-- **Teren 3D** — low-poly kafle 60×60 generowane wokół gracza; samolot wznosi się nad wydmami i górami
-- **Czołgi** — AI jazdy, wieża śledzi samolot, pasek życia, wybuch
-- **Broń** — CCIP (celownik na ziemi), pociski, rakiety
-- **Dźwięk** — Web Audio, syntezowany (bez plików audio)
-
-Gra działa tylko w poziomie.
+Jeden plik `index.html`, bez budowania. GitHub Pages: Settings → Pages → `main` / root.
