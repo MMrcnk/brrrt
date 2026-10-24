@@ -1,6 +1,18 @@
 # brrrt
 
-Gra 3D w przeglądarce w stylu Smashy Road: A-10C Thunderbolt II nad ogromną pustynią poluje na czołgi T-55. Silnik: three.js r128 (CDN). Tylko w poziomie.
+Gra 3D w przeglądarce w stylu Smashy Road: A-10C Thunderbolt II nad bliskowschodnią pustynią. Silnik: three.js r128 (CDN). Tylko w poziomie.
+
+## Misja — poziom 1
+
+Zniszcz wszystkie ważne punkty: stanowiska SAM (■), baterie artylerii (●) i sztab (★). Licznik CELE u góry ekranu, czerwone znaczniki przy krawędzi pokazują kierunek.
+
+## Strefy
+
+| Strefa | Gdzie | Wrogowie |
+|---|---|---|
+| Neutralna | otwarta pustynia | sporadycznie czołg lub jeep |
+| Wroga | wokół miasteczek, stanowisk i w pasie wokół sztabu | więcej czołgów i jeepów, SAM-y i artyleria z garnizonami |
+| Wojenna | do 700 m od sztabu | najwięcej wrogów, grupy czołgów |
 
 ## Sterowanie
 
@@ -14,15 +26,12 @@ Gra 3D w przeglądarce w stylu Smashy Road: A-10C Thunderbolt II nad ogromną pu
 | FLARY | F | Wyrzut flar — gubią rakiety SAM |
 | Pauza | P | Pauza |
 
-## Broń
+## Zrzuty
 
-| Broń | Działanie |
+| Dym | Zawartość |
 |---|---|
-| GAU-8/A | Seria w celownik na ziemi; trafienie obok czołgu też zadaje obrażenia |
-| Hydra 70 | Duży obszar rażenia, odnawiają się |
-| AGM-65 Maverick | 8 sztuk ze zrzutu (skrzynka na spadochronie, zielony dym). Strzela tylko z namierzeniem: cel w stożku 90° przed samolotem |
-
-Czołgi strzelają do samolotu, a stanowiska SAM (otoczone czołgami) odpalają rakiety naprowadzane — pasek KADŁUB u góry. Po drogach między wioskami jeżdżą technicale z karabinami. Czerwone znaczniki przy krawędzi ekranu: trójkąt = czołg, kwadrat = SAM, romb = jeep.
+| Zielony | 8 × AGM-65 Maverick (naprowadzane, stożek 90°) |
+| Czerwony | Apteczka: +40 kadłuba |
 
 ## Uruchomienie
 
