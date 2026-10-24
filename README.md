@@ -22,7 +22,7 @@ Gra 3D w przeglądarce w stylu Smashy Road: A-10C Thunderbolt II nad ogromną pu
 | Hydra 70 | Duży obszar rażenia, odnawiają się |
 | AGM-65 Maverick | 8 sztuk ze zrzutu (skrzynka na spadochronie, zielony dym). Strzela tylko z namierzeniem: cel w stożku 90° przed samolotem |
 
-Czołgi strzelają do samolotu, a stanowiska SAM (otoczone czołgami) odpalają rakiety naprowadzane — pasek KADŁUB u góry. Czerwone znaczniki przy krawędzi ekranu: trójkąt = czołg, kwadrat = SAM.
+Czołgi strzelają do samolotu, a stanowiska SAM (otoczone czołgami) odpalają rakiety naprowadzane — pasek KADŁUB u góry. Po drogach między wioskami jeżdżą technicale z karabinami. Czerwone znaczniki przy krawędzi ekranu: trójkąt = czołg, kwadrat = SAM, romb = jeep.
 
 ## Uruchomienie
 
