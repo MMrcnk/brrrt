@@ -1,6 +1,6 @@
-# BRRRT — A-10 nad pustynią
+# brrrt
 
-Gra przeglądarkowa w stylu Smashy Road: latasz A-10 Thunderbolt II nad dużą pustynią i niszczysz czołgi T-55.
+Gra 3D w przeglądarce w stylu Smashy Road: latasz A-10 Thunderbolt II nad pustynią (wydmy, góry, oazy) i niszczysz czołgi T-55. Silnik: three.js r128 (CDN).
 
 ## Sterowanie
 
@@ -19,7 +19,7 @@ Gra przeglądarkowa w stylu Smashy Road: latasz A-10 Thunderbolt II nad dużą p
 
 ## Uruchomienie
 
-Jeden plik `index.html`, bez zależności i bez budowania.
+Jeden plik `index.html`, bez budowania. three.js ładuje się z cdnjs.
 
 - lokalnie: otwórz `index.html` w przeglądarce
 - GitHub Pages: Settings → Pages → Source: `main` / root
@@ -29,7 +29,7 @@ Na iPhonie: Safari → Udostępnij → „Do ekranu początkowego”, gra urucho
 ## Struktura kodu (`index.html`)
 
 - **Generowanie świata** — góry, oazy, wydmy, drogi, kaktusy (ziarno losowe stałe → ta sama mapa)
-- **Kawałki terenu** — teren renderowany do kafli 512×512 i cache'owany
+- **Teren 3D** — low-poly kafle 60×60 generowane wokół gracza; samolot wznosi się nad wydmami i górami
 - **Czołgi** — AI jazdy, wieża śledzi samolot, pasek życia, wybuch
 - **Broń** — CCIP (celownik na ziemi), pociski, rakiety
 - **Dźwięk** — Web Audio, syntezowany (bez plików audio)
