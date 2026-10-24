@@ -10,6 +10,8 @@ Gra 3D w przeglądarce w stylu Smashy Road: latasz A-10 Thunderbolt II nad pusty
 | Duży przycisk (prawy dół) | Spacja | Ogień (przytrzymaj) |
 | ZMIEŃ | Q / E | Minigun GAU-8 ↔ rakiety Hydra 70 |
 | Pauza | P | Pauza |
+| Joystick do końca | — | Przyspieszenie |
+| Joystick w przeciwną stronę | — | Przewrót (Immelmann) i lot w nową stronę |
 
 ## Zasady
 
@@ -33,3 +35,5 @@ Na iPhonie: Safari → Udostępnij → „Do ekranu początkowego”, gra urucho
 - **Czołgi** — AI jazdy, wieża śledzi samolot, pasek życia, wybuch
 - **Broń** — CCIP (celownik na ziemi), pociski, rakiety
 - **Dźwięk** — Web Audio, syntezowany (bez plików audio)
+
+Gra działa tylko w poziomie.
