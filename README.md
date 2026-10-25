@@ -10,9 +10,11 @@ Zniszcz wszystkie ważne punkty: stanowiska SAM (■), baterie artylerii (●) i
 
 | Strefa | Gdzie | Wrogowie |
 |---|---|---|
-| Neutralna | otwarta pustynia | sporadycznie czołg lub jeep |
-| Wroga | wokół miasteczek, stanowisk i w pasie wokół sztabu | więcej czołgów i jeepów, SAM-y i artyleria z garnizonami |
-| Wojenna | do 700 m od sztabu | najwięcej wrogów, grupy czołgów |
+| Neutralna | pustynia między regionami: pola naftowe, ruiny, obozy Beduinów, wraki | sporadycznie czołg lub jeep |
+| Wroga | 4 regiony z miastem, wioskami, rafinerią, SAM i artylerią (oddalone o 1000+ m) | więcej czołgów i jeepów, garnizony |
+| Wojenna | do 480 m od sztabu (pas 480–820 m to strefa wroga) | najwięcej wrogów, grupy czołgów |
+
+Drogi tworzą sieć: autostrady między miastami i sztabem, drogi gruntowe do wiosek, rafinerii i pól naftowych, ze skrzyżowaniami.
 
 ## Sterowanie
 
