@@ -28,13 +28,13 @@ html{height:100%;box-sizing:border-box;background:var(--sand);overflow:hidden}
 body{height:100%;margin:0;overflow:hidden;background:var(--sand);color:var(--white);font-family:var(--f-ui);-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:none;overscroll-behavior:none;-webkit-tap-highlight-color:transparent}
 [hidden]{display:none!important}
 button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
-#game{position:fixed;inset:0;width:auto;height:auto;overflow:hidden;background:var(--sand);touch-action:none}
+#game{position:fixed;left:0;top:0;width:100vw;height:100vh;height:100dvh;overflow:hidden;background:var(--sand);touch-action:none}
 #c{position:absolute;inset:0;width:100%;height:100%;display:block}
 .hud{position:absolute;z-index:6;pointer-events:none}
 .txt{text-shadow:0 3px 0 rgba(90,40,10,.35)}
 #tl{top:calc(12px + env(safe-area-inset-top,0px));left:calc(16px + env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:5px}
 .hplbl{font:900 11px/1 var(--f-ui);letter-spacing:.22em;color:var(--white);text-shadow:0 1px 0 rgba(90,40,10,.4)}
-#hp{width:170px;height:7px;border-radius:5px;background:rgba(42,23,8,.35);box-shadow:inset 0 0 0 1.5px rgba(255,250,242,.85);overflow:hidden;padding:1.5px}
+#hp{width:160px;height:5px;border-radius:3px;background:rgba(42,23,8,.35);box-shadow:inset 0 0 0 1px rgba(255,250,242,.8);overflow:hidden;padding:1px}
 #hpfill{height:100%;border-radius:3px;background:var(--white);transform-origin:left center;transition:transform .2s,background .3s}
 #hp.low{animation:blink .5s steps(2) infinite}
 #hurt{position:absolute;inset:0;z-index:5;pointer-events:none;background:radial-gradient(ellipse at center,rgba(255,60,20,0) 45%,rgba(255,60,20,.55));opacity:0}
@@ -907,9 +907,17 @@ function initAudio(){
   const src=AC.createBufferSource();src.buffer=b;src.loop=true;
   const ws=AC.createWaveShaper();const n=1024,cu=new Float32Array(n);for(let i=0;i<n;i++){const x=i/(n-1)*2-1;cu[i]=15*x/(1+14*Math.abs(x));}ws.curve=cu;
   const lp=AC.createBiquadFilter();lp.type='lowpass';lp.frequency.value=2400;
-  brrG=AC.createGain();brrG.gain.value=0;src.connect(ws);ws.connect(lp);lp.connect(brrG);brrG.connect(out);src.start();
+  brrBuf=b;brrG=AC.createGain();brrG.gain.value=0;src.connect(ws);ws.connect(lp);lp.connect(brrG);brrG.connect(out);src.start();
+  // pogłos pustyni (długi, ciemny) — po puszczeniu spustu BRRRT rozchodzi się echem
+  const irL=Math.floor(sr*3.2),ir=AC.createBuffer(2,irL,sr);for(let c=0;c<2;c++){const dd=ir.getChannelData(c);for(let i=0;i<irL;i++){const t=i/sr;dd[i]=(Math.random()*2-1)*Math.pow(1-t/3.2,2.2)*(t<.06?t/.06:1);}}
+  conv=AC.createConvolver();conv.buffer=ir;const wlp=AC.createBiquadFilter();wlp.type='lowpass';wlp.frequency.value=1100;const wet=AC.createGain();wet.gain.value=.55;conv.connect(wlp);wlp.connect(wet);wet.connect(out);
+  const send=AC.createGain();send.gain.value=.45;brrG.connect(send);send.connect(conv);
+  brrShaper=ws;
   const e1=AC.createBufferSource();e1.buffer=noiseBuf;e1.loop=true;const bp=AC.createBiquadFilter();bp.type='bandpass';bp.frequency.value=3300;bp.Q.value=7;const g1=AC.createGain();g1.gain.value=.05;e1.connect(bp);bp.connect(g1);g1.connect(out);e1.start();
   const e2=AC.createBufferSource();e2.buffer=noiseBuf;e2.loop=true;const lp2=AC.createBiquadFilter();lp2.type='lowpass';lp2.frequency.value=260;const g2=AC.createGain();g2.gain.value=.16;e2.connect(lp2);lp2.connect(g2);g2.connect(out);e2.start(0,.7);
+  // turbina TF34: ton zależny od mocy
+  const o1=AC.createOscillator();o1.type='sawtooth';o1.frequency.value=180;const of=AC.createBiquadFilter();of.type='lowpass';of.frequency.value=700;const og=AC.createGain();og.gain.value=.012;o1.connect(of);of.connect(og);og.connect(out);o1.start();
+  ENG={bp,g1,lp2,g2,o1,og,on:true};
 }
 function sfxBoom(vol,big){if(!AC||vol<.03)return;const t=AC.currentTime;
   const s=AC.createBufferSource();s.buffer=noiseBuf;const f=AC.createBiquadFilter();f.type='lowpass';f.frequency.setValueAtTime(big?1500:1900,t);f.frequency.exponentialRampToValueAtTime(80,t+(big?1.7:1));
@@ -917,7 +925,17 @@ function sfxBoom(vol,big){if(!AC||vol<.03)return;const t=AC.currentTime;
   const o=AC.createOscillator();o.frequency.setValueAtTime(big?75:95,t);o.frequency.exponentialRampToValueAtTime(26,t+.7);const og=AC.createGain();og.gain.setValueAtTime(vol*(big?1:.6),t);og.gain.exponentialRampToValueAtTime(.001,t+.8);o.connect(og);og.connect(out);o.start(t);o.stop(t+.9);}
 function sfxRocket(){if(!AC)return;const t=AC.currentTime;const s=AC.createBufferSource();s.buffer=noiseBuf;const f=AC.createBiquadFilter();f.type='bandpass';f.Q.value=1.4;f.frequency.setValueAtTime(2600,t);f.frequency.exponentialRampToValueAtTime(380,t+.55);
   const g=AC.createGain();g.gain.setValueAtTime(.45,t);g.gain.exponentialRampToValueAtTime(.001,t+.7);s.connect(f);f.connect(g);g.connect(out);s.start(t,Math.random());s.stop(t+.8);}
-function setBrrr(on){if(!AC||on===brrOn)return;brrOn=on;const t=AC.currentTime;brrG.gain.cancelScheduledValues(t);brrG.gain.setTargetAtTime(on?.6:0,t,on?.008:.03);}
+let brrBuf=null,conv=null,brrShaper=null,ENG=null,brrStart=0;
+function setBrrr(on){if(!AC||on===brrOn)return;brrOn=on;const t=AC.currentTime;brrG.gain.cancelScheduledValues(t);brrG.gain.setTargetAtTime(on?.6:0,t,on?.008:.03);
+  if(on){brrStart=t;return;}const dur=clamp(t-brrStart,.25,1.6);if(dur<.2||PL.dead)return;
+  // echo BRRRT: dźwięk działka dochodzi z opóźnieniem i odbija się od terenu
+  for(const [dl,gv,fq] of [[.38,.42,900],[1.05,.2,600]]){const s=AC.createBufferSource();s.buffer=brrBuf;s.loop=true;const ws=AC.createWaveShaper();ws.curve=brrShaper.curve;const f=AC.createBiquadFilter();f.type='lowpass';f.frequency.value=fq;const g=AC.createGain();
+    const t0=t+dl;g.gain.setValueAtTime(0,t);g.gain.setValueAtTime(0,t0);g.gain.linearRampToValueAtTime(gv,t0+.06);g.gain.setValueAtTime(gv,t0+dur*.8);g.gain.exponentialRampToValueAtTime(.001,t0+dur+.9);
+    s.connect(ws);ws.connect(f);f.connect(g);g.connect(out);g.connect(conv);s.start(t0,Math.random()*.5);s.stop(t0+dur+1);}}
+function setEngine(power,dead){if(!ENG)return;const t=AC.currentTime;const tc=dead?.25:.4;const p=dead?0:power;
+  ENG.g1.gain.setTargetAtTime(dead?0:.045+.07*p,t,tc);ENG.bp.frequency.setTargetAtTime(3300+1300*p,t,tc);ENG.g2.gain.setTargetAtTime(dead?0:.15+.2*p,t,tc);ENG.lp2.frequency.setTargetAtTime(240+260*p,t,tc);
+  ENG.og.gain.setTargetAtTime(dead?0:.01+.025*p,t,tc);ENG.o1.frequency.setTargetAtTime(170+120*p,t,tc);}
+let engT=0;
 const distVol=(x,z)=>clamp(1-Math.hypot(x-P.x,z-P.z)/450,0,1);
 
 /* ================= BROŃ I EFEKTY ================= */
@@ -1047,7 +1065,7 @@ function hitPlayer(dmg){
   const h=$('hurt');h.classList.remove('on');void h.offsetWidth;h.classList.add('on');
   if(PL.hp<=0)killPlayer();
 }
-function killPlayer(){
+function killPlayer(){setEngine(0,true);
   PL.dead=true;PL.deadT=0;Wp.fire=false;setBrrr(false);fireBtn.classList.remove('on');
   explode(P.x,P.y,P.z,1.4);sfxBoom(1,true);
   P.crash={vy:-2,spin:rnd(2.5,4)*(Math.random()<.5?-1:1),roll:P.roll};
@@ -1539,21 +1557,25 @@ const safeEl=document.createElement('div');safeEl.style.cssText='position:fixed;
 const safeL=()=>{const r=safeEl.getBoundingClientRect();return r.left||0;};
 const safeB=()=>{const r=safeEl.getBoundingClientRect();return Math.max(0,window.innerHeight-r.top)||0;};
 function resize(){
-  checkOrient();const r=gameEl.getBoundingClientRect();W=Math.max(1,Math.round(r.width));H=Math.max(1,Math.round(r.height));
+  checkOrient();const vs=viewSize();gameEl.style.width=vs[0]+'px';gameEl.style.height=vs[1]+'px';W=vs[0];H=vs[1];
   dpr=Math.min(window.devicePixelRatio||1,2);renderer.setPixelRatio(dpr);renderer.setSize(W,H,false);camera.aspect=W/H;camera.updateProjectionMatrix();
   if(stick.id===null)stickHome();if(window.scrollY)window.scrollTo(0,0);}
 addEventListener('resize',resize);if(window.visualViewport)visualViewport.addEventListener('resize',resize);
-let sizeT=0;function checkSize(dt){sizeT-=dt;if(sizeT>0)return;sizeT=.25;const r=gameEl.getBoundingClientRect();if(Math.abs(r.width-W)>.5||Math.abs(r.height-H)>.5)resize();}
+// iOS Safari: przy starcie w poziomie wysokość okna potrafi zmienić się bez zdarzenia resize — pilnujemy jej sami
+function viewSize(){const vv=window.visualViewport,de=document.documentElement;const w=Math.max(window.innerWidth||0,de.clientWidth||0,vv?Math.round(vv.width):0);const h=Math.max(window.innerHeight||0,de.clientHeight||0,vv?Math.round(vv.height):0);return[Math.max(1,Math.round(w)),Math.max(1,Math.round(h))];}
+let sizeT=0;function checkSize(dt){sizeT-=dt;if(sizeT>0)return;sizeT=.2;const vs=viewSize();const r=gameEl.getBoundingClientRect();if(vs[0]!==W||vs[1]!==H||Math.abs(r.height-vs[1])>1||Math.abs(r.width-vs[0])>1)resize();}
+for(const ms of [100,400,900,1800,3500])setTimeout(()=>{window.scrollTo(0,0);resize();},ms);
+addEventListener('pageshow',()=>setTimeout(resize,50));addEventListener('load',()=>setTimeout(resize,50));
 let last=performance.now();
 function loop(now){let dt=(now-last)/1000;last=now;dt=Math.min(dt,.05);
-  checkSize(dt);if(!paused){update(dt);updateChunks(cam.x,cam.z,2);renderer.render(scene,camera);updHud();updOverlay();}
+  checkSize(dt);engT-=dt;if(engT<=0&&AC){engT=.1;setEngine(running?boost:0,PL.dead);}if(!paused){update(dt);updateChunks(cam.x,cam.z,2);renderer.render(scene,camera);updHud();updOverlay();}
   requestAnimationFrame(loop);}
 const startEl=$('start'),goBtn=$('go');
 function checkOrient(){const portrait=window.innerHeight>window.innerWidth;$('rotate').hidden=!portrait;if(portrait&&running&&!paused&&!PL.dead)togglePause();}
 addEventListener('orientationchange',()=>setTimeout(resize,300));
 function startGame(){if(window.innerHeight>window.innerWidth)return;try{screen.orientation&&screen.orientation.lock&&screen.orientation.lock('landscape').catch(()=>{});}catch(e){}initAudio();startEl.hidden=true;if(paused){paused=false;last=performance.now();if(AC)AC.resume();return;}running=true;crateCd=9;}
 function togglePause(){paused=!paused;if(paused){Wp.fire=false;fireBtn.classList.remove('on');setBrrr(false);goBtn.textContent='GRAJ DALEJ';startEl.hidden=false;if(AC)AC.suspend();}else{startEl.hidden=true;if(AC)AC.resume();last=performance.now();}}
-function restart(){
+function restart(){setEngine(0,false);
   $('over').hidden=true;PL.hp=PL.max;PL.dead=false;PL.deadT=0;P.crash=null;plane.visible=true;kills=0;
   Wp.gun=Wp.gunMax;Wp.rkt=Wp.rktMax;Wp.hom=0;Wp.cur='gun';setWeaponUI();shells.length=0;
   for(const q of eMissiles)q.m.visible=false;eMissiles.length=0;FL.n=FL.max;hc.fl=-1;for(const st of sites)st.fireCd=rnd(4,7);
