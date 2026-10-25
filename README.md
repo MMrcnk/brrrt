@@ -6,6 +6,8 @@ Gra 3D w przeglądarce w stylu Smashy Road: A-10C Thunderbolt II nad bliskowscho
 
 Zniszcz wszystkie ważne punkty: stanowiska SAM (■), baterie artylerii (●) i sztab (★). Licznik CELE u góry ekranu, czerwone znaczniki przy krawędzi pokazują kierunek.
 
+Dodatkowo: 10 strażnic przy drogach (worki z piaskiem, 2 jeepy, czasem czołg) — opcjonalne cele. Seria zniszczeń x2, x3… gdy kolejny wróg padnie w ciągu 4 s. Budynki w osadach można zburzyć, a drogi zbombardować (jeepy zawracają przed lejem). Start w losowym miejscu strefy neutralnej.
+
 ## Strefy
 
 | Strefa | Gdzie | Wrogowie |
