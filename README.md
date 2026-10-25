@@ -16,6 +16,8 @@ Zniszcz wszystkie ważne punkty: stanowiska SAM (■), baterie artylerii (●) i
 
 Drogi tworzą sieć: autostrady między miastami i sztabem, drogi gruntowe do wiosek, rafinerii i pól naftowych, ze skrzyżowaniami.
 
+Zbiorniki i odwierty na polach naftowych i w rafineriach wybuchają po trafieniu rakietą i ranią wrogów w pobliżu (reakcja łańcuchowa).
+
 ## Sterowanie
 
 | Telefon | Klawiatura | Akcja |
@@ -33,7 +35,7 @@ Drogi tworzą sieć: autostrady między miastami i sztabem, drogi gruntowe do wi
 | Dym | Zawartość |
 |---|---|
 | Zielony | 8 × AGM-65 Maverick (naprowadzane, stożek 90°) |
-| Czerwony | Apteczka: +40 kadłuba |
+| Czerwony | Naprawa: +60 kadłuba (A-10 ma 160) |
 
 ## Uruchomienie
 

@@ -34,8 +34,8 @@ button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
 .txt{text-shadow:0 3px 0 rgba(90,40,10,.35)}
 #tl{top:calc(12px + env(safe-area-inset-top,0px));left:calc(16px + env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:5px}
 .hplbl{font:900 11px/1 var(--f-ui);letter-spacing:.22em;color:var(--white);text-shadow:0 1px 0 rgba(90,40,10,.4)}
-#hp{width:190px;height:14px;border-radius:8px;background:rgba(42,23,8,.35);box-shadow:inset 0 0 0 2.5px rgba(255,250,242,.85);overflow:hidden;padding:3px}
-#hpfill{height:100%;border-radius:5px;background:var(--white);transform-origin:left center;transition:transform .2s,background .3s}
+#hp{width:170px;height:7px;border-radius:5px;background:rgba(42,23,8,.35);box-shadow:inset 0 0 0 1.5px rgba(255,250,242,.85);overflow:hidden;padding:1.5px}
+#hpfill{height:100%;border-radius:3px;background:var(--white);transform-origin:left center;transition:transform .2s,background .3s}
 #hp.low{animation:blink .5s steps(2) infinite}
 #hurt{position:absolute;inset:0;z-index:5;pointer-events:none;background:radial-gradient(ellipse at center,rgba(255,60,20,0) 45%,rgba(255,60,20,.55));opacity:0}
 #hurt.on{animation:hurt .45s ease-out}
@@ -120,11 +120,10 @@ button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
   <div id="hurt"></div>
 
   <div class="hud" id="tl">
-    <div class="hplbl">KADŁUB</div>
     <div id="hp"><div id="hpfill"></div></div>
   </div>
 
-  <div class="hud txt" id="obj"><span id="objT">CELE 0/10</span><div id="objI"></div><div id="zlab" class="z0">STREFA NEUTRALNA</div></div>
+  <div class="hud txt" id="obj"><span id="objT" hidden></span><div id="objI"></div><div id="zlab" class="z0">STREFA NEUTRALNA</div></div>
   <div class="hud" id="tr">
     <button class="ibtn" id="pause" aria-label="Pauza"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1.2"/><rect x="14" y="5" width="4" height="14" rx="1.2"/></svg></button>
     <button class="ibtn" id="mute" aria-label="Dźwięk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor" stroke="none"/><path id="mwave" d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/><path id="mx" d="M16 9l5 6M21 9l-5 6" hidden/></svg></button>
@@ -561,12 +560,14 @@ function fence(P,p,hx,hz,gate){const pts=[[-hx,-hz],[hx,-hz],[hx,hz],[-hx,hz],[-
   for(let s=0;s<4;s++){const A=pts[s],B=pts[s+1];const L=Math.hypot(B[0]-A[0],B[1]-A[1]);const n=Math.ceil(L/8);for(let i=0;i<=n;i++){const lx=A[0]+(B[0]-A[0])*i/n,lz=A[1]+(B[1]-A[1])*i/n;if(s===2&&Math.abs(lx)<gate)continue;const q=lpt(p,lx,lz);const y=terr(q[0],q[1]);P.push({g:G.box,c:0x8c8c86,m:MAT(q[0],y+1.1,q[1],0,0,0,.14,2.2,.14)});}
     const segs=s===2?[[A,[gate,hz]],[[-gate,hz],B]]:[[A,B]];for(const [a,b] of segs){const qa=lpt(p,a[0],a[1]),qb=lpt(p,b[0],b[1]);const ya=terr(qa[0],qa[1])+2.1,yb=terr(qb[0],qb[1])+2.1;P.push({g:G.cylS,c:0x9a9a94,m:segMat(qa[0],ya,qa[1],qb[0],yb,qb[1],.05)});}}}
 function guyed(P,x,y,z,H,rad){for(let i=0;i<3;i++){const a=i/3*TAU+.4;const gx=x+Math.cos(a)*rad,gz=z+Math.sin(a)*rad;P.push({g:G.cylS,c:0x55575a,m:segMat(x,y+H*.8,z,gx,terr(gx,gz)+.2,gz,.04)},{g:G.box,c:0x9a9a94,m:MAT(gx,terr(gx,gz)+.2,gz,0,0,0,.8,.4,.8)});}}
+const boomPts=[];const burntMat=new T3.MeshLambertMaterial({color:0x2b2521});
 function buildOil(p){const rng=mulberry32(p.s);const P=[];const L=(lx,lz)=>{const q=lpt(p,lx,lz);return[q[0],terr(q[0],q[1]),q[1]];};const ang=p.ang;
   const B=(g,lx,ly,lz,sx,sy,sz,cc,rx,rz)=>{const q=L(lx,lz);partAt(P,g,q[0],q[1],q[2],ang,0,ly,0,sx,sy,sz,cc,1,rx||0,rz||0);};
   // stacja zbiorcza: wysypany plac, zbiorniki w obwałowaniu, separatory, estakada rur, budynek sterowni, pochodnia
   B(G.box,0,.06,0,110,.12,72,0xc9b996);
   B(G.box,-28,.75,-33,46,1.5,1.3,0xb59a6c);B(G.box,-28,.75,15,46,1.5,1.3,0xb59a6c);B(G.box,-51,.75,-9,1.3,1.5,48,0xb59a6c);B(G.box,-5,.75,-9,1.3,1.5,48,0xb59a6c);
-  for(const [lx,lz] of [[-40,-22],[-16,-22],[-40,4],[-16,4]]){const q=L(lx,lz);tank(P,q[0],q[1],q[2],8.2,9.5,rng()<.75?0xe7e3d8:0xc9c6bc);}
+  for(const [lx,lz] of [[-40,-22],[-16,-22],[-40,4],[-16,4]]){const q=L(lx,lz);tank(P,q[0],q[1],q[2],8.2,9.5,rng()<.75?0xe7e3d8:0xc9c6bc);boomPts.push({x:q[0],y:q[1],z:q[2],r:8.2,h:9.5,big:2});}
+  for(let i=0;i<3;i++){const q=L(14,-24+i*7);boomPts.push({x:q[0],y:q[1],z:q[2],r:4,h:3,big:1});}
   for(let i=0;i<3;i++){B(G.cylS,14,2.3,-24+i*7,1.6,12,1.6,0xdedbd0,0,Math.PI/2);for(const sx of [-4,4])B(G.box,14+sx,1,-24+i*7,.6,2,2.4,0x8a8c88);}
   B(G.cylS,34,4,-20,1.8,8,1.8,0xd5d2c6);B(G.cylS,40,3,-20,1.3,6,1.3,0xd5d2c6);
   {const a=L(-5,26),b=L(52,26);rackLine(P,a[0],a[2],b[0],b[2],p.h,1,4,[0x9c9a92,0x8e8c84,0xb8a24a,0x9c9a92]);}
@@ -583,7 +584,7 @@ function buildOil(p){const rng=mulberry32(p.s);const P=[];const L=(lx,lz)=>{cons
   const minX=Math.min(-55,...wells.map(w=>w[0])),maxX=Math.max(55,...wells.map(w=>w[0]));
   const spine=[];for(let lx=minX;lx<=maxX;lx+=6){const q=lpt(p,lx,0);spine.push(q);}if(spine.length>1)makeStrip(spine,3,0xc0a07a);
   for(const [lx,lz] of wells){const q=L(lx,lz);const pa=ang+(rng()<.5?0:Math.PI);
-    if(rng()<.62){pumpjackStatic(P,q[0],q[1],q[2],pa);pumps.push({x:q[0],y:q[1],z:q[2],a:pa,ph:rng()*TAU,sp:1+rng()*.6});}else wellhead(P,q[0],q[1],q[2],pa);
+    if(rng()<.62){pumpjackStatic(P,q[0],q[1],q[2],pa);pumps.push({x:q[0],y:q[1],z:q[2],a:pa,ph:rng()*TAU,sp:1+rng()*.6});boomPts.push({x:q[0],y:q[1],z:q[2],r:4,h:2,big:1,pump:pumps.length-1});}else{wellhead(P,q[0],q[1],q[2],pa);boomPts.push({x:q[0],y:q[1],z:q[2],r:3,h:2,big:1});}
     const br=[];const sg=Math.sign(lz);for(let z=0;Math.abs(z)<=Math.abs(lz)-8;z+=sg*6)br.push(lpt(p,lx,z));if(br.length>1)makeStrip(br,2.4,0xc6a47c);
     let prev=null;const off=4.2;for(let z=sg*off;Math.abs(z)<=Math.abs(lz)-6;z+=sg*10){const w=lpt(p,lx+off,z);const y=terr(w[0],w[1])+.55;if(prev)P.push({g:G.cylS,c:0x8e8c84,m:segMat(prev[0],prev[1],prev[2],w[0],y,w[1],.16)});P.push({g:G.box,c:0x6a6a64,m:MAT(w[0],y-.3,w[1],0,-ang,0,1,.5,.25)});prev=[w[0],y,w[1]];}}
   for(const sd of [-1,1]){const far=sd>0?maxX:minX;if(Math.abs(far)<=56)continue;let prev=null;for(let x=sd*56;Math.abs(x)<=Math.abs(far)+4;x+=sd*10){const w=lpt(p,x,off2);const y=terr(w[0],w[1])+.55;if(prev){P.push({g:G.cylS,c:0x8e8c84,m:segMat(prev[0],prev[1],prev[2],w[0],y,w[1],.22)});P.push({g:G.cylS,c:0x8e8c84,m:segMat(prev[0],prev[1]+.5,prev[2],w[0],y+.5,w[1],.16)});}P.push({g:G.box,c:0x6a6a64,m:MAT(w[0],y-.3,w[1],0,-ang,0,.25,.5,1.4)});prev=[w[0],y,w[1]];}}
@@ -594,14 +595,14 @@ function buildRefinery(p){const rng=mulberry32(p.s);const P=[];const L=(lx,lz)=>
   B(G.box,0,.06,0,224,.12,164,0xc2b18f);B(G.box,0,.14,52,214,.06,9,0x5a5650);B(G.box,-18,.14,-6,9,.06,150,0x5a5650);B(G.box,0,.14,70,9,.06,22,0x5a5650);
   // park zbiorników w obwałowaniach
   B(G.box,-62,.8,-72,82,1.6,1.4,0xb39a70);B(G.box,-62,.8,30,82,1.6,1.4,0xb39a70);B(G.box,-103,.8,-21,1.4,1.6,102,0xb39a70);B(G.box,-24,.8,-21,1.4,1.6,102,0xb39a70);B(G.box,-62,.6,-21,78,1.2,1,0xb39a70);B(G.box,-62,.6,-21,1,1.2,100,0xb39a70);
-  const TC=[0xe8e4da,0xdedcd6,0xe8e4da,0xc9b89a];let ti=0;for(const lx of [-88,-62,-36])for(const lz of [-56,-30,-4,20]){if(lz===20&&lx===-36)continue;const q=L(lx,lz+(lz===20?-4:0));tank(P,q[0],q[1],q[2],lz===20?7:10.5,lz===20?9:12+rng()*3,TC[(ti++)%4]);}
+  const TC=[0xe8e4da,0xdedcd6,0xe8e4da,0xc9b89a];let ti=0;for(const lx of [-88,-62,-36])for(const lz of [-56,-30,-4,20]){if(lz===20&&lx===-36)continue;const q=L(lx,lz+(lz===20?-4:0));const tr=lz===20?7:10.5,th=lz===20?9:12+rng()*3;tank(P,q[0],q[1],q[2],tr,th,TC[(ti++)%4]);boomPts.push({x:q[0],y:q[1],z:q[2],r:tr,h:th,big:2});}
   // instalacja destylacji: kolumny z podestami, piec ze stalowymi kominami, konstrukcja stalowa, kule LPG
   for(const [lx,lz,r,h] of [[14,-48,2.7,42],[23,-50,2,33],[31,-46,1.6,25]]){B(G.cylS,lx,h/2,lz,r,h,r,0xdcdad2);B(G.dome,lx,h,lz,r,r*.5,r,0xcfccc4);for(let y=6;y<h;y+=7)B(G.cylS,lx,y,lz,r+.8,.18,r+.8,0x8a8c88);B(G.box,lx+r+.2,h/2,lz,.15,h,.6,0x6a6c68);}
   B(G.box,6,4.5,-18,18,9,9,0x9b948a);B(G.box,6,9.2,-18,18.4,.4,9.4,0x7d776e);for(const sx of [-4,4]){B(G.cylS,6+sx,19,-18,1.1,20,1.1,0x6c6c68);B(G.cylS,6+sx,27.5,-18,1.13,1.6,1.13,0xb0402a);B(G.cylS,6+sx,25,-18,1.13,1.2,1.13,0xe8e4da);}
   for(let i=0;i<3;i++)for(let j=0;j<3;j++)B(G.box,42+i*9,7.5,-48+j*8,.5,15,.5,0x7a7c78);for(const y of [5,10,15])B(G.box,51,y,-40,19,.3,17,0x8a8c88);
   for(let i=0;i<3;i++)B(G.cylS,45+i*6,10+i,-44,1.2,8,1.2,0xe2dfd6);B(G.cylS,51,5.8,-34,1,9,1,0xcfccc4,0,Math.PI/2);B(G.cylS,51,5.8,-31,1,9,1,0xcfccc4,0,Math.PI/2);
   for(let i=0;i<5;i++)B(G.cylS,70+(i%3)*5,4+i*1.6,-10+(i>2?6:0),1+rng()*.8,8+i*2.4,1+rng()*.8,0xd8d5cc);
-  for(const lx of [44,64]){B(G.sph,lx,9.5,18,7,7,7,0xeceae2);for(let i=0;i<8;i++){const a=i/8*TAU;B(G.cylS,lx+Math.cos(a)*5.6,4.5,18+Math.sin(a)*5.6,.32,9,.32,0x8a8c88);}B(G.box,lx,9.5,11,.3,.3,1.2,0x7a7c78);}
+  for(const lx of [44,64]){B(G.sph,lx,9.5,18,7,7,7,0xeceae2);{const q=L(lx,18);boomPts.push({x:q[0],y:q[1],z:q[2],r:7,h:16,big:2,sph:true});}for(let i=0;i<8;i++){const a=i/8*TAU;B(G.cylS,lx+Math.cos(a)*5.6,4.5,18+Math.sin(a)*5.6,.32,9,.32,0x8a8c88);}B(G.box,lx,9.5,11,.3,.3,1.2,0x7a7c78);}
   {const a=L(-20,-28),b=L(95,-28);rackLine(P,a[0],a[2],b[0],b[2],p.h,2,8,[0x9c9a92,0x8e8c84,0xb8a24a,0xa8a69e,0x7e7c76,0x9c9a92,0xc0c0b8,0x8e8c84]);}
   {const a=L(-14,-70),b=L(-14,42);rackLine(P,a[0],a[2],b[0],b[2],p.h,1,4,[0x9c9a92,0x8e8c84,0xb8a24a,0xa8a69e]);}
   // nalewak cystern, budynki, parking
@@ -642,7 +643,10 @@ const beamGeo=mergeParts([{g:G.box,c:0x55636b,m:MAT(.3,0,0,0,0,0,7.9,.42,.42)},{
 const crankGeo=mergeParts([{g:G.box,c:0x5d6163,m:MAT(.75,0,.72,0,0,0,2,.36,.16)},{g:G.box,c:0x5d6163,m:MAT(.75,0,-.72,0,0,0,2,.36,.16)},{g:G.box,c:0xb8432e,m:MAT(1.5,0,.8,0,0,0,1,1.3,.34)},{g:G.box,c:0xb8432e,m:MAT(1.5,0,-.8,0,0,0,1,1.3,.34)},{g:G.cylS,c:0x3e4a50,m:MAT(0,0,0,Math.PI/2,0,0,.24,1.8,.24)}]);
 const beamIM=new T3.InstancedMesh(beamGeo,matS,Math.max(1,pumps.length)),crankIM=new T3.InstancedMesh(crankGeo,matS,Math.max(1,pumps.length));
 [beamIM,crankIM].forEach(m=>{m.castShadow=true;m.frustumCulled=false;m.count=pumps.length;scene.add(m);});
-function updPOI(dt){for(let i=0;i<pumps.length;i++){const p=pumps[i];if(Math.abs(p.x-cam.x)>260||Math.abs(p.z-cam.z)>260)continue;const ph=time*p.sp+p.ph;
+function updPOI(dt){for(const b of boomPts){if(!(b.burn>0))continue;b.burn-=dt;if(Math.abs(b.x-cam.x)>320||Math.abs(b.z-cam.z)>320)continue;const k=b.burn/(b.big===2?50:28),big=b.big===2;const top=b.y+(b.sph?12:b.h);
+    if(Math.random()<dt*(big?30:14)*(.3+k))glow(b.x+rnd(-b.r*.6,b.r*.6),top+rnd(0,2),b.z+rnd(-b.r*.6,b.r*.6),rnd(-1,1),rnd(5,10),rnd(-1,1),big?rnd(2.5,4):rnd(1,1.8),big?rnd(5,8):rnd(2.2,3.4),rnd(.5,.9));
+    if(Math.random()<dt*(big?14:7))puff(b.x+rnd(-2,2),top+3,b.z+rnd(-2,2),rnd(1,3),rnd(7,11),rnd(0,1.5),big?rnd(3,4.5):rnd(1.5,2.2),big?rnd(9,13):rnd(4,6),Math.random()<.6?0x1f1b19:0x34302c,rnd(4,6.5),.25);}
+  for(let i=0;i<pumps.length;i++){const p=pumps[i];if(Math.abs(p.x-cam.x)>260||Math.abs(p.z-cam.z)>260)continue;if(p.dead){_so.position.set(p.x,p.y-20,p.z);_so.scale.set(.001,.001,.001);_so.updateMatrix();beamIM.setMatrixAt(i,_so.matrix);crankIM.setMatrixAt(i,_so.matrix);_so.scale.set(1,1,1);continue;}const ph=time*p.sp+p.ph;
     _so.position.set(p.x,p.y+5.4,p.z);_so.rotation.set(0,-p.a,-.27*Math.cos(ph));_so.scale.set(1,1,1);_so.updateMatrix();beamIM.setMatrixAt(i,_so.matrix);
     _so.position.set(p.x-Math.cos(p.a)*3.3,p.y+2.6,p.z-Math.sin(p.a)*3.3);_so.rotation.set(0,-p.a,ph);_so.updateMatrix();crankIM.setMatrixAt(i,_so.matrix);}
   beamIM.instanceMatrix.needsUpdate=true;crankIM.instanceMatrix.needsUpdate=true;
@@ -885,7 +889,7 @@ const retGun=new T3.Group(),retRkt=new T3.Group();
 const Wp={cur:'gun',fire:false,gun:1174,gunMax:1174,rkt:14,rktMax:14,hom:0,homMax:8,spin:0,acc:0,rktCd:0,homCd:0,rktRegen:0,idle:0,side:1,shot:0};
 const GUN_D=46,RKT_D=70;
 const bullets=[],rockets=[],missiles=[],shells=[],scorches=[],crates=[];
-const PL={hp:100,max:100,dead:false,deadT:0,smokeT:0};
+const PL={hp:160,max:160,dead:false,deadT:0,smokeT:0};
 let kills=0,shake=0,running=false,paused=false,time=0,spawnCd=0,crateCd=9,toastT=0,noLockT=0,boost=0;
 const cam={x:P.x,z:P.z,y:P.y-22};
 
@@ -942,7 +946,7 @@ function scorch(x,z,r){const n=12;const pos=[];const yC=terr(x,z)+.18;const pts=
   if(scorches.length>50){const o=scorches.shift();scene.remove(o);o.geometry.dispose();o.material.dispose();}}
 
 /* ---- minigun: trafienie bezpośrednie = pełne obrażenia, obok czołgu = mniej ---- */
-const GUN_DMG=11,TANK_R=5.5,GUN_SPLASH=14;
+const GUN_DMG=14,TANK_R=5.5,GUN_SPLASH=14;
 function fireBullet(){
   const mz=muzzle();const c=Math.cos(P.a),s=Math.sin(P.a);const spr=1.05;const u=(Math.random()-.5)*2*spr,w=(Math.random()-.5)*2*spr*1.5;
   const ex=P.x+c*(GUN_D+w)-s*u,ez=P.z+s*(GUN_D+w)+c*u;const ey=terr(ex,ez);
@@ -977,7 +981,18 @@ function fireRocket(){
   Wp.rkt--;sfxRocket();shake=Math.max(shake,.6);glow(sx,sy,sz,0,0,0,1,2.4,.08,1);
   for(let i=0;i<3;i++)puff(sx,sy,sz,rnd(-4,4),rnd(-1,1),rnd(-4,4),.8,2.6,0xece6da,rnd(.7,1.1),2);
 }
-function impactRocket(x,y,z){explode(x,y,z,1.25);sfxBoom(.7*distVol(x,z)+.2,false);
+function detonate(b){if(b.done)return;b.done=true;b.burn=b.big===2?50:28;const R=b.big===2?55:32;const cy=b.y+b.h*.5;
+  explode(b.x,cy,b.z,b.big===2?3.4:2.2);setTimeout(()=>explode(b.x+rnd(-4,4),cy+rnd(2,6),b.z+rnd(-4,4),b.big===2?2.6:1.5),260);sfxBoom(Math.max(.5,distVol(b.x,b.z)),true);scorch(b.x,b.z,b.big===2?b.r+9:10);shake=Math.max(shake,b.big===2?5:3);
+  for(let i=0;i<(b.big===2?26:12);i++){const a=Math.random()*TAU,v=rnd(8,26);glow(b.x,cy,b.z,Math.cos(a)*v,rnd(10,30),Math.sin(a)*v,rnd(2,4),rnd(5,9),rnd(.8,1.4));}
+  for(const t of tanks){if(!t.alive)continue;const d=Math.hypot(t.x-b.x,t.z-b.z);if(d<R)damage(t,220*(1-d/R)+25);}
+  for(const j of jeeps){if(j.alive&&Math.hypot(j.x-b.x,j.z-b.z)<R)damageJeep(j,80);}
+  for(const st of sites){if(!st.alive)continue;const d=Math.hypot(st.x-b.x,st.z-b.z);if(d<R+10)damageSite(st,110*(1-d/(R+10))+20);}
+  if(b.pump!=null)pumps[b.pump].dead=true;
+  if(b.big===2){const m=new T3.Mesh(G.cylS,burntMat);if(b.sph){m.geometry=G.sph;m.scale.set(b.r*1.02,b.r*1.02,b.r*1.02);m.position.set(b.x,b.y+9.5,b.z);}else{m.scale.set(b.r*1.02,b.h*.55,b.r*1.02);m.position.set(b.x,b.y+b.h*.275,b.z);}scene.add(m);}
+  smashCacti(b.x,b.z,R*.5);
+  for(const o of boomPts){if(o.done)continue;const d=Math.hypot(o.x-b.x,o.z-b.z);if(d<(b.big===2?34:22))setTimeout(()=>detonate(o),rnd(350,1100));}}
+function oilHit(x,z){for(const b of boomPts){if(b.done)continue;if(Math.abs(b.x-x)>b.r+10||Math.abs(b.z-z)>b.r+10)continue;if(Math.hypot(b.x-x,b.z-z)<b.r+7)detonate(b);}}
+function impactRocket(x,y,z){oilHit(x,z);explode(x,y,z,1.25);sfxBoom(.7*distVol(x,z)+.2,false);
   for(const st of sites){if(!st.alive)continue;const d=Math.hypot(x-st.x,z-st.z);if(d<RKT_R+(st.hq?14:0))damageSite(st,d<(st.hq?24:10)?90:45);}
   for(const j of jeeps){if(j.alive&&Math.hypot(x-j.x,z-j.z)<RKT_R)damageJeep(j,60);}
   for(const t of tanks){if(!t.alive)continue;const d=Math.hypot(x-t.x,z-t.z);if(d<RKT_R)damage(t,d<6?RKT_DMG:RKT_DMG*(1-(d-6)/(RKT_R-6))*.95+10);}
@@ -997,7 +1012,7 @@ function fireMissile(t){
   Wp.hom--;sfxRocket();glow(x,y,z,0,0,0,1.2,2.6,.1,1);
   if(Wp.hom<=0){setTimeout(()=>{if(Wp.cur==='hom'&&Wp.hom<=0){Wp.cur='gun';setWeaponUI();}},500);}
 }
-function impactMissile(x,y,z){explode(x,y,z,1.6);sfxBoom(.8*distVol(x,z)+.25,true);
+function impactMissile(x,y,z){oilHit(x,z);explode(x,y,z,1.6);sfxBoom(.8*distVol(x,z)+.25,true);
   for(const t of tanks){if(!t.alive)continue;const d=Math.hypot(x-t.x,z-t.z);if(d<12)damage(t,d<6?70:70*(1-(d-6)/6)*.8);}
   for(const st of sites){if(!st.alive)continue;const d=Math.hypot(x-st.x,z-st.z);if(d<(st.hq?30:14))damageSite(st,d<(st.hq?24:8)?80:45);}
   for(const j of jeeps){if(j.alive&&Math.hypot(x-j.x,z-j.z)<14)damageJeep(j,60);}
@@ -1045,8 +1060,8 @@ const chuteGeo=(()=>{const P2=[];P2.push({g:G.dome,c:0xe8742c,m:MAT(0,9.5,0,0,0,
   for(let i=0;i<6;i++){const a=i/6*TAU;const tx=Math.cos(a)*5,tz=Math.sin(a)*5;const mx=tx/2,mz=tz/2;const len=Math.hypot(tx,7.3,tz);P2.push({g:G.cylS,c:0x333333,m:MAT(mx,2.2+3.65,mz,Math.atan2(tz,7.3),0,-Math.atan2(tx,7.3),.03,len,.03)});}
   return mergeParts(P2);})();
 function spawnCrate(type){type=type||'hom';
-  for(let k=0;k<20;k++){const a=P.a+rnd(-.9,.9),d=rnd(170,280);const x=P.x+Math.cos(a)*d,z=P.z+Math.sin(a)*d;
-    if(x<300||z<300||x>WORLD-300||z>WORLD-300)continue;const h=terr(x,z,INFO);if(INFO.mt>.3||h<-.5)continue;
+  for(let k=0;k<60;k++){const a=(k<30?P.a:Math.atan2(WORLD/2-P.z,WORLD/2-P.x))+rnd(-1.1,1.1),d=rnd(170,300);const x=P.x+Math.cos(a)*d,z=P.z+Math.sin(a)*d;
+    if(x<480||z<480||x>WORLD-480||z>WORLD-480)continue;const h=terr(x,z,INFO);if(INFO.mt>.15||h<-.5||inPOI(x,z)||inTown(x,z,10))continue;
     const g=new T3.Group();const box=new T3.Mesh(type==='med'?medGeo:crateGeo,matS);box.castShadow=true;g.add(box);const ch=new T3.Mesh(chuteGeo,matS);ch.castShadow=true;g.add(ch);g.position.set(x,h+120,z);scene.add(g);
     crates.push({type,g,ch,x,z,y:h+120,gy:h,landed:false,t:0,life:75,fold:0});return;}
 }
@@ -1059,12 +1074,12 @@ function updCrates(dt){
       if(Math.random()<dt*7)puff(c.x+rnd(-.5,.5),c.gy+2.6,c.z+rnd(-.5,.5),rnd(.5,2),rnd(4,7),rnd(-1,1),.7,3.2,c.type==='med'?0xf06a5c:0x6fd06a,rnd(2,3),.5);}
     c.g.position.set(c.x,c.y,c.z);
     // przechwycenie: przelot nad skrzynką
-    if(!PL.dead&&running&&Math.hypot(P.x-c.x,P.z-c.z)<17&&P.y-c.y<42){sfxPick();if(c.type==='med'){PL.hp=Math.min(PL.max,PL.hp+40);hc.hp=-1;toast('+40 KADŁUB');for(let k=0;k<14;k++)glow(c.x,c.y+2,c.z,rnd(-8,8),rnd(4,14),rnd(-8,8),.5,.1,.5,2);scene.remove(c.g);crates.splice(i,1);continue;}Wp.hom=Wp.homMax;toast('+8 MAVERICK');
+    if(!PL.dead&&running&&Math.hypot(P.x-c.x,P.z-c.z)<17&&P.y-c.y<42){sfxPick();if(c.type==='med'){PL.hp=Math.min(PL.max,PL.hp+60);hc.hp=-1;toast('NAPRAWA');for(let k=0;k<14;k++)glow(c.x,c.y+2,c.z,rnd(-8,8),rnd(4,14),rnd(-8,8),.5,.1,.5,2);scene.remove(c.g);crates.splice(i,1);continue;}Wp.hom=Wp.homMax;toast('+8 MAVERICK');
       for(let k=0;k<14;k++)glow(c.x,c.y+2,c.z,rnd(-8,8),rnd(4,14),rnd(-8,8),.5,.1,.5,2);
       Wp.cur='hom';setWeaponUI();scene.remove(c.g);crates.splice(i,1);continue;}
     if(c.t>c.life||Math.hypot(c.x-P.x,c.z-P.z)>900){scene.remove(c.g);crates.splice(i,1);}
   }
-  crateCd-=dt;if(crateCd<=0&&running&&!PL.dead){crateCd=rnd(20,30);const hH=crates.some(c=>c.type==='hom'),hM=crates.some(c=>c.type==='med');if(!hM&&PL.hp<80&&(Math.random()<.65||hH))spawnCrate('med');else if(!hH)spawnCrate('hom');}
+  crateCd-=dt;if(crateCd<=0&&running&&!PL.dead){crateCd=rnd(20,30);const hH=crates.some(c=>c.type==='hom'),hM=crates.some(c=>c.type==='med');if(!hM&&PL.hp<PL.max*.8&&(Math.random()<.65||hH))spawnCrate('med');else if(!hH)spawnCrate('hom');}
 }
 
 /* ---- stanowiska obrony przeciwlotniczej (SAM) ---- */
@@ -1104,7 +1119,7 @@ function makeArt(x,z){const y=terr(x,z);const g=new T3.Group();const base=new T3
   sites.push({kind:'site',art:true,x,z,y,g,tur:guns[0],guns,dish,bg,fg,fm,hp:200,max:200,alive:true,garrison:false,fireCd:rnd(3,7),hit:0,burn:0,ta:aim,aim});}
 function nearTownSpot(list,minD,maxD){for(let k=0;k<1500;k++){if(k===700){minD*=.8;maxD*=1.5;}const t=list[Math.floor(R()*list.length)];if(!t)return null;const a=R()*TAU,d=t.r+rg(minD,maxD);const x=t.x+Math.cos(a)*d,z=t.z+Math.sin(a)*d;
   if(sites.some(q=>Math.hypot(q.x-x,q.z-z)<(k<700?300:200)))continue;if(pois.some(p=>Math.hypot(p.x-x,p.z-z)<p.r+40))continue;if(siteOk(x,z))return[x,z];}return null;}
-for(const q of REG){if(q.war)continue;const tl=towns.filter(t=>t.reg===q);if(!tl.length)continue;const big=tl.filter(t=>t.big);let p=nearTownSpot(big.length?big:tl,100,200);if(p)makeSite(p[0],p[1]);p=nearTownSpot(tl.filter(t=>!t.big).length?tl.filter(t=>!t.big):tl,100,220);if(p)makeArt(p[0],p[1]);}
+for(const q of REG){if(q.war)continue;const tl=towns.filter(t=>t.reg===q);if(!tl.length)continue;const big=tl.filter(t=>t.big);let p=nearTownSpot(big.length?big:tl,100,200);if(p)makeSite(p[0],p[1]);q.ri=(REG.indexOf(q)%2);if(q.ri)continue;p=nearTownSpot(tl.filter(t=>!t.big).length?tl.filter(t=>!t.big):tl,100,220);if(p)makeArt(p[0],p[1]);}
 /* ---- SZTAB: jeden, najlepiej broniony ---- */
 let HQ_POS=null;
 const hqBaseGeo=(()=>{const P2=[];const wc=0xcfc2a6;const B=(x,y,z,sx,sy,sz,c)=>P2.push({g:G.box,c:c||wc,m:MAT(x,y,z,0,0,0,sx,sy,sz)});
@@ -1131,7 +1146,7 @@ function makeHQ(x,z){const y=terr(x,z);
   HQ_POS={x,z};sites.push({kind:'site',hq:true,x,z,y,g,tur:t1,tur2:t2,aa,dish,bg,fg,fm,hp:650,max:650,alive:true,garrison:false,fireCd:rnd(2,4),hit:0,burn:0,ta:0,L:[[-20,-22],[20,14]],li:0,aaCd:2,aaBurst:0,aaBt:0});}
 makeHQ(HQ_SPOT.x,HQ_SPOT.z);
 if(HQ_POS){const hq=HQ_POS;
-  for(let i=0;i<2;i++){for(let k=0;k<300;k++){const a=R()*TAU,d=rg(150,260);const x=hq.x+Math.cos(a)*d,z=hq.z+Math.sin(a)*d;if(sites.some(q=>Math.hypot(q.x-x,q.z-z)<160))continue;if(siteOk(x,z)){makeSite(x,z);break;}}}
+  for(let i=0;i<1;i++){for(let k=0;k<300;k++){const a=R()*TAU,d=rg(150,260);const x=hq.x+Math.cos(a)*d,z=hq.z+Math.sin(a)*d;if(sites.some(q=>Math.hypot(q.x-x,q.z-z)<160))continue;if(siteOk(x,z)){makeSite(x,z);break;}}}
   for(let k=0;k<300;k++){const a=R()*TAU,d=rg(170,280);const x=hq.x+Math.cos(a)*d,z=hq.z+Math.sin(a)*d;if(sites.some(q=>Math.hypot(q.x-x,q.z-z)<160))continue;if(siteOk(x,z)){makeArt(x,z);break;}}}
 // strefy: 0 neutralna, 1 wroga, 2 wojenna
 function zoneAt(x,z){if(Math.hypot(x-HQ_SPOT.x,z-HQ_SPOT.z)<480)return 2;for(const q of REG)if(Math.hypot(x-q.x,z-q.z)<q.r)return 1;return 0;}
@@ -1191,7 +1206,7 @@ const SH_ST='M10 1.5 12.6 7.4 19 7.6 14 11.6 15.8 18 10 14.3 4.2 18 6 11.6 1 7.6
 function updMarks(){
   const list=[];if(running&&!PL.dead){for(const t of tanks)if(t.alive){const d=Math.hypot(t.x-P.x,t.z-P.z);if(d<700)list.push([d,t,0]);}
     for(const st of sites)if(st.alive){const d=Math.hypot(st.x-P.x,st.z-P.z);list.push([d*.15,st,st.hq?3:1]);}
-    for(const j of jeeps)if(j.alive){const d=Math.hypot(j.x-P.x,j.z-P.z);if(d<600)list.push([d,j,2]);}}
+  }
   list.sort((a,b)=>a[0]-b[0]);let n=0,nsq=0;const m=30;
   for(const [d,t,kind] of list){if(n>=markEls.length)break;const p=screenPos(t.x,t.y+2,t.z);if(p.z<1&&p.x>m&&p.x<W-m&&p.y>m&&p.y<H-m)continue;
     let dx=p.x-W/2,dy=p.y-H/2;if(p.z>1){dx=-dx;dy=-dy;}const a=Math.atan2(dy,dx);const k=Math.min((W/2-m)/Math.abs(Math.cos(a)||1e-6),(H/2-m)/Math.abs(Math.sin(a)||1e-6));
@@ -1245,11 +1260,11 @@ function updJeeps(dt,bq){
       const ang=Math.atan2(P.z-j.z,P.x-j.x);j.ga=wrapA(j.ga+clamp(wrapA(ang-j.ga),-2.5*dt,2.5*dt));j.mg.rotation.y=-(wrapA(j.ga-j.a));
       if(Math.random()<dt*6)puff(j.x-Math.cos(j.a)*3,j.y+.4,j.z-Math.sin(j.a)*3,rnd(-1,1),rnd(.5,1.5),rnd(-1,1),.6,2.6,0xe2b583,1,1);
       // ogień z karabinu: krótkie serie, gdy samolot jest blisko ekranu
-      j.fireCd-=dt;if(j.burst<=0&&j.fireCd<=0&&running&&!PL.dead&&!P.man&&d<60&&nearScreen(j.x,j.y,j.z,0)){j.burst=7+Math.floor(Math.random()*5);j.bt=0;}
-      if(j.burst>0){j.bt-=dt;if(j.bt<=0){j.bt=.09;j.burst--;if(j.burst<=0)j.fireCd=rnd(2.5,4.5);
+      j.fireCd-=dt;if(j.burst<=0&&j.fireCd<=0&&running&&!PL.dead&&!P.man&&d<60&&nearScreen(j.x,j.y,j.z,0)){j.burst=4+Math.floor(Math.random()*3);j.bt=0;}
+      if(j.burst>0){j.bt-=dt;if(j.bt<=0){j.bt=.09;j.burst--;if(j.burst<=0)j.fireCd=rnd(6,9);
         const mx=j.x+Math.cos(j.ga)*2.2-Math.cos(j.a)*1.6,mz=j.z+Math.sin(j.ga)*2.2-Math.sin(j.a)*1.6,my=j.y+3.1;const tof=Math.hypot(P.x-mx,P.y-my,P.z-mz)/200;
         const c=Math.cos(P.a),s=Math.sin(P.a);const tx=P.x+c*P.v*tof+rnd(-3.5,3.5),ty=P.y+rnd(-2,2),tz=P.z+s*P.v*tof+rnd(-3.5,3.5);const dx=tx-mx,dy=ty-my,dz=tz-mz,L=Math.hypot(dx,dy,dz);
-        shells.push({mg:true,x:mx,y:my,z:mz,vx:dx/L*200,vy:dy/L*200,vz:dz/L*200,life:0,px:mx,py:my,pz:mz});glow(mx,my,mz,0,0,0,.5,1,.05,2);if(Math.random()<.5)sfxShot(distVol(j.x,j.z)*.25);}}
+        shells.push({mg:true,jeep:true,x:mx,y:my,z:mz,vx:dx/L*200,vy:dy/L*200,vz:dz/L*200,life:0,px:mx,py:my,pz:mz});glow(mx,my,mz,0,0,0,.5,1,.05,2);if(Math.random()<.5)sfxShot(distVol(j.x,j.z)*.25);}}
       j.hit=Math.max(0,j.hit-dt);const near=d<320;j.bg.visible=j.fg.visible=near;
       if(near){const f=j.hp/j.max;j.bg.position.set(j.x,j.y+6,j.z);j.bg.quaternion.copy(bq);j.bg.scale.set(5.4,1.2,1);j.fg.quaternion.copy(bq);j.fg.scale.set(Math.max(.01,5*f),.85,1);_v.set(-(5-5*f)/2,0,0).applyQuaternion(bq);j.fg.position.set(j.x+_v.x,j.y+6+_v.y,j.z+_v.z);j.fm.color.set(j.hit>0?0xffffff:f>.5?0x7be05a:0xf2522f);}
       if(d>950){scene.remove(j.g,j.bg,j.fg);j.fm.dispose();jeeps.splice(i,1);}}
@@ -1258,6 +1273,16 @@ function updJeeps(dt,bq){
       if(j.wreck<=0){scene.remove(j.g,j.bg,j.fg);j.fm.dispose();jeeps.splice(i,1);}}}
 }
 function nearScreen(x,y,z,m){const p=screenPos(x,y,z);return p.z<1&&p.x>-W*m&&p.x<W*(1+m)&&p.y>-H*m&&p.y<H*(1+m);}
+
+/* ---- kule krzaków toczone wiatrem (tumbleweed) ---- */
+const tumbleGeo=(()=>{const P2=[];const rng=mulberry32(99);for(let i=0;i<34;i++){const a=rng()*TAU,b=rng()*Math.PI;P2.push({g:G.box,c:rng()<.5?0xa5885a:0x8a6f45,m:MAT((rng()-.5)*.6,(rng()-.5)*.6,(rng()-.5)*.6,a,b,rng()*3,1.6,.05,.05)});}return mergeParts(P2);})();
+const tumbles=[];for(let i=0;i<14;i++){const m=new T3.Mesh(tumbleGeo,matS);m.castShadow=true;scene.add(m);tumbles.push({m,x:0,z:0,v:0,ph:Math.random()*10,init:false,s:rnd(.8,1.3)});}
+function placeTumble(t,edge){for(let k=0;k<10;k++){const a=edge?WIND+Math.PI+rnd(-1.2,1.2):Math.random()*TAU,d=edge?rnd(170,230):rnd(20,200);const x=cam.x+Math.cos(a)*d,z=cam.z+Math.sin(a)*d;const h=terr(x,z,INFO);if(h>-.5&&INFO.oz<.3){t.x=x;t.z=z;t.v=rnd(3.5,7.5);t.init=true;return;}}}
+function updTumbles(dt){const wx=Math.cos(WIND),wz=Math.sin(WIND);
+  for(const t of tumbles){if(!t.init)placeTumble(t,false);t.ph+=dt;const gust=1+.5*Math.sin(t.ph*.7);t.x+=wx*t.v*gust*dt+Math.sin(t.ph*1.3)*.6*dt;t.z+=wz*t.v*gust*dt+Math.cos(t.ph*1.1)*.6*dt;
+    const g=terr(t.x,t.z);if(g<-.5||Math.hypot(t.x-cam.x,t.z-cam.z)>260){placeTumble(t,true);continue;}
+    const hop=Math.abs(Math.sin(t.ph*2.4))*(.4+.8*gust)*t.s;t.m.position.set(t.x,g+.75*t.s+hop,t.z);t.m.rotation.y=-WIND;t.m.rotation.z-=t.v*gust/(.8*t.s)*dt;t.m.scale.setScalar(t.s);
+    if(hop<.05&&Math.random()<dt*3)puff(t.x,g+.3,t.z,0,.5,0,.3,1.2,0xe2b583,.6,2);}}
 
 /* ================= STEROWANIE ================= */
 const stick={x:0,y:0,id:null,cx:0,cy:0,sx:0,sy:0,hold:0};
@@ -1418,7 +1443,7 @@ function update(dt){
     PTRAC.m.setMatrixAt(tn,dummy.matrix);PTRAC.m.setColorAt(tn,tmpC.setRGB(1,.86+Math.random()*.1,.45));tn++;}
   // pociski czołgów
   for(let i=shells.length-1;i>=0;i--){const q=shells[i];q.life+=dt;q.px=q.x;q.py=q.y;q.pz=q.z;q.x+=q.vx*dt;q.y+=q.vy*dt;q.z+=q.vz*dt;
-    if(!PL.dead&&Math.hypot(q.x-P.x,q.y-P.y,q.z-P.z)<(q.mg?3.8:4.4)){hitPlayer(q.mg?1.8:rnd(9,13));shells.splice(i,1);continue;}
+    if(!PL.dead&&Math.hypot(q.x-P.x,q.y-P.y,q.z-P.z)<(q.mg?3.8:4.4)){hitPlayer(q.jeep?.6:q.mg?1.8:rnd(9,13));shells.splice(i,1);continue;}
     if(q.life>(q.mg?1.4:2.6)||q.y<terr(q.x,q.z)){if(!q.mg){puff(q.x,q.y,q.z,0,1,0,1,3.2,0x4a4440,1.2,1);glow(q.x,q.y,q.z,0,0,0,.8,2,.12,2);}shells.splice(i,1);continue;}
     if(tn<PTRAC.cap){dummy.position.set((q.x+q.px)/2,(q.y+q.py)/2,(q.z+q.pz)/2);const ts=q.mg?.9:2.2;dummy.scale.set(ts,ts,Math.hypot(q.x-q.px,q.y-q.py,q.z-q.pz)*(q.mg?1.4:2.2)+.5);dummy.lookAt(q.x,q.y,q.z);dummy.updateMatrix();PTRAC.m.setMatrixAt(tn,dummy.matrix);PTRAC.m.setColorAt(tn,tmpC.setRGB(1,.35,.12));tn++;}}
   PTRAC.m.count=tn;PTRAC.m.instanceMatrix.needsUpdate=true;if(PTRAC.m.instanceColor)PTRAC.m.instanceColor.needsUpdate=true;
@@ -1496,7 +1521,7 @@ function update(dt){
         if(Math.random()<dt*10)puff(st.x+rnd(-3,3),st.y+3,st.z+rnd(-3,3),rnd(.5,2),rnd(6,9),rnd(-1,1),rnd(1.4,2),rnd(5,7),Math.random()<.5?0x2e2925:0x4a423c,rnd(3,4.5),.4);}
       if(st.tFly){const fl=st.tFly;fl.vy-=30*dt;st.tur.position.x+=fl.vx*dt;st.tur.position.y+=fl.vy*dt;st.tur.position.z+=fl.vz*dt;st.tur.rotation.x+=fl.wx*dt;st.tur.rotation.z+=fl.wz*dt;
         const gy=terr(st.x+st.tur.position.x,st.z+st.tur.position.z)-st.g.position.y+.4;if(st.tur.position.y<gy&&fl.vy<0){st.tur.position.y=gy;st.tFly=null;}}}}
-  updJeeps(dt,bq);updPOI(dt);updSoft(dt);
+  updJeeps(dt,bq);updPOI(dt);updSoft(dt);updTumbles(dt);
   updEnemyMissiles(dt);updFlares(dt);updCrates(dt);updPools(dt);
   toastT-=dt;if(toastT<=0)$('toast').hidden=true;
   shake=Math.max(0,shake-dt*7);
