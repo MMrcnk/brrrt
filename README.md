@@ -24,7 +24,7 @@ Zbiorniki i odwierty na polach naftowych i w rafineriach wybuchają po trafieniu
 
 | Telefon | Klawiatura | Akcja |
 |---|---|---|
-| Joystick góra / dół | W / S, ↑ / ↓ | Wznoszenie / opadanie (pułap 180 m, zderzenie z ziemią = rozbicie) |
+| Joystick góra / dół | W / S, ↑ / ↓ | Nos w górę / w dół — pełny lot 3D: pionowo, nurkowanie, pętle (pułap 180 m, ziemia = rozbicie) |
 | Joystick lewo / prawo | A / D, ← / → | Skręt |
 | Strzałka ▲ | Shift | Dopalacz |
 | Strzałka ▼ | X / Ctrl | Hamowanie |
@@ -45,7 +45,7 @@ Zbiorniki i odwierty na polach naftowych i w rafineriach wybuchają po trafieniu
 Jeden plik `index.html`, bez budowania. GitHub Pages: Settings → Pages → `main` / root.
 
 ## Celowanie
-Celownik na środku ekranu — minigun i Hydry lecą tam, gdzie wskazuje. Im bliżej cel, tym mniejszy rozrzut. Celownik czerwienieje nad wrogiem.
+Celownik jest przypięty do nosa samolotu — celujesz, sterując samolotem. Im bliżej cel, tym mniejszy rozrzut. Celownik czerwienieje nad wrogiem.
 
 ## Kompas
-Pasek u góry pokazuje kierunek lotu i cele do zniszczenia (■ SAM, ● artyleria, ★ sztab) z odległością.
+Kompas w stylu LEGO Batman 2: wszystkie ikonki (■ SAM, ● artyleria, ★ sztab, strażnice, czołgi, skrzynki) tylko na nim.
