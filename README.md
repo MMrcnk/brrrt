@@ -24,7 +24,7 @@ Zbiorniki i odwierty na polach naftowych i w rafineriach wybuchają po trafieniu
 
 | Telefon | Klawiatura | Akcja |
 |---|---|---|
-| Joystick góra / dół | W / S, ↑ / ↓ | Wznoszenie / opadanie (pułap 180 m) |
+| Joystick góra / dół | W / S, ↑ / ↓ | Wznoszenie / opadanie (pułap 180 m, zderzenie z ziemią = rozbicie) |
 | Joystick lewo / prawo | A / D, ← / → | Skręt |
 | Strzałka ▲ | Shift | Dopalacz |
 | Strzałka ▼ | X / Ctrl | Hamowanie |
@@ -46,3 +46,6 @@ Jeden plik `index.html`, bez budowania. GitHub Pages: Settings → Pages → `ma
 
 ## Celowanie
 Celownik na środku ekranu — minigun i Hydry lecą tam, gdzie wskazuje. Im bliżej cel, tym mniejszy rozrzut. Celownik czerwienieje nad wrogiem.
+
+## Kompas
+Pasek u góry pokazuje kierunek lotu i cele do zniszczenia (■ SAM, ● artyleria, ★ sztab) z odległością.
