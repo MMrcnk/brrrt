@@ -31,6 +31,7 @@ Zbiorniki i odwierty na polach naftowych i w rafineriach wybuchają po trafieniu
 | ZMIEŃ | Q / E | Minigun → Hydra → Maverick |
 | FLARY | F | Wyrzut flar — gubią rakiety SAM |
 | Pauza | P | Pauza |
+| Aparat (prawy górny róg) | C | Kamera z góry ↔ zza ogona (eksperymentalna) |
 
 ## Zrzuty
 
