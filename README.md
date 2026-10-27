@@ -24,14 +24,14 @@ Zbiorniki i odwierty na polach naftowych i w rafineriach wybuchają po trafieniu
 
 | Telefon | Klawiatura | Akcja |
 |---|---|---|
-| Joystick (lewa połowa ekranu) | WASD / strzałki | Kierunek lotu |
-| Joystick do oporu | — | Dopalanie |
-| Joystick w przeciwną stronę | — | Przewrót (Immelmann) |
+| Joystick góra / dół | W / S, ↑ / ↓ | Wznoszenie / opadanie (pułap 180 m) |
+| Joystick lewo / prawo | A / D, ← / → | Skręt |
+| Strzałka ▲ | Shift | Dopalacz |
+| Strzałka ▼ | X / Ctrl | Hamowanie |
 | Duży przycisk | Spacja | Ogień |
 | ZMIEŃ | Q / E | Minigun → Hydra → Maverick |
 | FLARY | F | Wyrzut flar — gubią rakiety SAM |
 | Pauza | P | Pauza |
-| Aparat (prawy górny róg) | C | Kamera z góry ↔ zza ogona (eksperymentalna) |
 
 ## Zrzuty
 
@@ -43,3 +43,6 @@ Zbiorniki i odwierty na polach naftowych i w rafineriach wybuchają po trafieniu
 ## Uruchomienie
 
 Jeden plik `index.html`, bez budowania. GitHub Pages: Settings → Pages → `main` / root.
+
+## Celowanie
+Celownik na środku ekranu — minigun i Hydry lecą tam, gdzie wskazuje. Im bliżej cel, tym mniejszy rozrzut. Celownik czerwienieje nad wrogiem.
