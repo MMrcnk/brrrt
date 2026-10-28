@@ -1087,7 +1087,7 @@ const retGun=new T3.Group(),retRkt=new T3.Group();
 [retGun,retRkt].forEach(g=>{g.renderOrder=15;g.children.forEach(c=>c.renderOrder=15);scene.add(g);g.visible=false;});
 
 /* ================= STAN GRY ================= */
-const AIM={x:0,y:0,z:0,hit:false,tgt:false,d:100},_ad=new T3.Vector3();const AIMR=420;
+const XHD=25,XHP=new T3.Vector3();const AIM={x:0,y:0,z:0,hit:false,tgt:false,d:100},_ad=new T3.Vector3();const AIMR=420;
 const Wp={cur:'gun',fire:false,gun:1174,gunMax:1174,rkt:14,rktMax:14,hom:0,homMax:8,spin:0,acc:0,rktCd:0,homCd:0,rktRegen:0,idle:0,side:1,shot:0};
 const GUN_D=46,RKT_D=70;
 const bullets=[],rockets=[],missiles=[],shells=[],scorches=[],crates=[];
@@ -1206,7 +1206,7 @@ function rayTargets(ox,oy,oz,dx,dy,dz,maxT){let best=-1;const chk=(x,z,r,y0,y1)=
   for(const q of sites)if(q.alive){const y=q.y!=null?q.y:terr(q.x,q.z);chk(q.x,q.z,q.hq?40:q.art?9:10,y-1,y+(q.hq?14:8));}
   return best;}
 function fireBullet(){
-  const mz=muzzle();const c=Math.cos(P.a),s=Math.sin(P.a);const spr=.25+AIM.d*.0075;const ra=Math.random()*TAU,rr=Math.sqrt(Math.random())*spr;
+  const mz=muzzle();const c=Math.cos(P.a),s=Math.sin(P.a);const spr=.12+AIM.d*.0035;const ra=Math.random()*TAU,rr=Math.sqrt(Math.random())*spr;
   let ex=AIM.x+Math.cos(ra)*rr,ez=AIM.z+Math.sin(ra)*rr,ey=AIM.tgt?AIM.y+(Math.random()-.5)*spr:AIM.hit?terr(ex,ez):AIM.y+(Math.random()-.5)*spr;if(AIM.hit&&!AIM.tgt&&ey<-.8)ey=-.8;
   bullets.push({sx:mz.x,sy:mz.y,sz:mz.z,ex,ey,ez,t:0,T:Math.max(.08,Math.hypot(ex-mz.x,ey-mz.y,ez-mz.z)/650),tr:Wp.shot%2===0,air:!AIM.hit});
   Wp.shot++;Wp.gun--;shake=Math.max(shake,.35);
@@ -1264,7 +1264,7 @@ for(let i=0;i<16;i++){const m=new T3.Mesh(rocketGeo,matS);m.visible=false;m.scal
 function fireRocket(){
   const c=Math.cos(P.a),s=Math.sin(P.a);Wp.side*=-1;const off=Wp.side*rnd(4.8,6.6);
   const sx=P.x+c*1.5-s*off,sz=P.z+s*1.5+c*off,sy=P.y-1.3;
-  const spr=.6+AIM.d*.012;const ex=AIM.x+rnd(-spr,spr),ez=AIM.z+rnd(-spr,spr);const ey=AIM.tgt?AIM.y:AIM.hit?Math.max(terr(ex,ez),-.8):AIM.y;
+  const spr=.3+AIM.d*.005;const ex=AIM.x+rnd(-spr,spr),ez=AIM.z+rnd(-spr,spr);const ey=AIM.tgt?AIM.y:AIM.hit?Math.max(terr(ex,ez),-.8):AIM.y;
   const m=rocketMeshes.find(r=>!r.visible);if(!m)return;m.visible=true;
   rockets.push({m,sx,sy,sz,ex,ey,ez,t:0,T:Math.max(.25,Math.hypot(ex-sx,ey-sy,ez-sz)/240),x:sx,y:sy,z:sz,air:!AIM.hit});
   Wp.rkt--;sfxRocket();shake=Math.max(shake,.6);glow(sx,sy,sz,0,0,0,1,2.4,.08,1);
@@ -1811,11 +1811,13 @@ function update(dt){
   sun.position.set(cam.x+SUN.x*220,cam.y+SUN.y*220,cam.z+SUN.z*220);sun.target.position.set(cam.x,cam.y,cam.z);sun.target.updateMatrixWorld();
 
   // punkt celowania: wzdłuż nosa samolotu
-  {const ox=P.x+FW.x*8,oy=P.y+FW.y*8,oz=P.z+FW.z*8;let t=0,hit=false,px=0,py=0,pz=0;
-    for(;t<=AIMR;t+=8){px=ox+FW.x*t;py=oy+FW.y*t;pz=oz+FW.z*t;if(py<=Math.max(terr(px,pz),-.8)){hit=true;break;}}
-    if(hit){let lo=Math.max(0,t-8),hi=t;for(let k=0;k<6;k++){const m=(lo+hi)/2;const qx=ox+FW.x*m,qy=oy+FW.y*m,qz=oz+FW.z*m;if(qy<=Math.max(terr(qx,qz),-.8))hi=m;else lo=m;}t=hi;px=ox+FW.x*t;py=oy+FW.y*t;pz=oz+FW.z*t;}else{t=AIMR;px=ox+FW.x*t;py=oy+FW.y*t;pz=oz+FW.z*t;}
-    AIM.tgt=false;{const tt=rayTargets(ox,oy,oz,FW.x,FW.y,FW.z,t);if(tt>=0&&tt<=t){t=tt;px=ox+FW.x*t;py=oy+FW.y*t;pz=oz+FW.z*t;hit=true;AIM.tgt=true;}}
-    AIM.x=px;AIM.y=py;AIM.z=pz;AIM.hit=hit;AIM.d=t+8;}
+  // celownik 25 m przed dziobem; strzał leci po promieniu kamera→celownik, więc trafia dokładnie pod krzyżyk
+  {XHP.set(P.x+FW.x*XHD,P.y+FW.y*XHD,P.z+FW.z*XHD);const ox=XHP.x,oy=XHP.y,oz=XHP.z;_fv.copy(XHP).sub(camera.position).normalize();const dx=_fv.x,dy=_fv.y,dz=_fv.z;let t=0,hit=false,px=0,py=0,pz=0;
+    if(oy<=Math.max(terr(ox,oz),-.8)){hit=true;px=ox;py=oy;pz=oz;}else{
+    for(t=4;t<=AIMR;t+=6){px=ox+dx*t;py=oy+dy*t;pz=oz+dz*t;if(py<=Math.max(terr(px,pz),-.8)){hit=true;break;}}
+    if(hit){let lo=Math.max(0,t-6),hi=t;for(let k=0;k<7;k++){const m=(lo+hi)/2;const qx=ox+dx*m,qy=oy+dy*m,qz=oz+dz*m;if(qy<=Math.max(terr(qx,qz),-.8))hi=m;else lo=m;}t=hi;px=ox+dx*t;py=oy+dy*t;pz=oz+dz*t;}else{t=AIMR;px=ox+dx*t;py=oy+dy*t;pz=oz+dz*t;}}
+    AIM.tgt=false;{const tt=rayTargets(ox,oy,oz,dx,dy,dz,t);if(tt>=0&&tt<=t){t=tt;px=ox+dx*t;py=oy+dy*t;pz=oz+dz*t;hit=true;AIM.tgt=true;}}
+    AIM.x=px;AIM.y=py;AIM.z=pz;AIM.hit=hit;AIM.d=t+XHD;}
   // broń
   const firing=running&&!paused&&Wp.fire&&!PL.dead;
   if(Wp.cur==='gun'){
@@ -1838,7 +1840,7 @@ function update(dt){
   retGun.visible=retRkt.visible=false;
   {const xh=$('xh');const sh=running&&!PL.dead&&Wp.cur!=='hom';if(xh.hidden===sh)xh.hidden=!sh;const cls=Wp.cur==='rkt'?'rkt':'gun';if(xh.dataset.k!==cls){xh.dataset.k=cls;xh.className='hud '+cls;}
     let onT=false;if(AIM.hit){for(const t of tanks){if(t.alive&&Math.abs(t.x-AIM.x)<9&&Math.abs(t.z-AIM.z)<9){onT=true;break;}}if(!onT)for(const j of jeeps){if(j.alive&&Math.abs(j.x-AIM.x)<6&&Math.abs(j.z-AIM.z)<6){onT=true;break;}}if(!onT)for(const q of sites){if(q.alive&&Math.hypot(q.x-AIM.x,q.z-AIM.z)<(q.hq?40:14)){onT=true;break;}}if(!onT)for(const q of towers){if(q.alive&&Math.hypot(q.x-AIM.x,q.z-AIM.z)<9){onT=true;break;}}}
-    {const xd=Math.min(AIM.d,50);const ax2=P.x+FW.x*xd,ay2=P.y+FW.y*xd,az2=P.z+FW.z*xd;const sp=screenPos(ax2,ay2,az2);if(sp.z>1)xh.style.visibility='hidden';else{xh.style.visibility='';xh.style.transform=`translate(${sp.x.toFixed(1)}px,${sp.y.toFixed(1)}px)`;}}
+    {const ax2=XHP.x,ay2=XHP.y,az2=XHP.z;const sp=screenPos(ax2,ay2,az2);if(sp.z>1)xh.style.visibility='hidden';else{xh.style.visibility='';xh.style.transform=`translate(${sp.x.toFixed(1)}px,${sp.y.toFixed(1)}px)`;}}
     xh.classList.toggle('tgt',onT||AIM.tgt);xh.classList.toggle('far',!AIM.hit);const em=(Wp.cur==='gun'?Wp.gun<1:Wp.rkt<1);xh.classList.toggle('empty',em);}
   radar.visible=running&&Wp.cur==='hom'&&!P.man&&!PL.dead;if(radar.visible){radar.position.set(P.x,Math.max(terr(P.x,P.z),0)+1.2,P.z);radar.rotation.y=-P.a;}
 
