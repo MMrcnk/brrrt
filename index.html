@@ -62,7 +62,7 @@ button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
 #objI i{width:11px;height:11px;background:#ff3b2b;border:2px solid var(--white);border-radius:2px}
 #objI b{width:18px;height:18px;background:#ff3b2b;clip-path:polygon(50% 0,63% 35%,100% 38%,71% 60%,80% 100%,50% 78%,20% 100%,29% 60%,0 38%,37% 35%)}
 #objI u{width:11px;height:11px;background:#ff3b2b;border:2px solid var(--white);border-radius:50%}
-#zlab{font:900 10px/1 var(--f-ui);letter-spacing:.2em;position:static}
+#zlab{font:900 10px/1 var(--f-ui);letter-spacing:.2em;position:static;text-shadow:none}
 #zlab.z0{color:var(--white)}
 #zlab.z1{color:#ffb15a}
 #zlab.z2{color:#ff4b2b;animation:blink 1s steps(2) infinite}
@@ -88,7 +88,7 @@ button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
 #flareBtn.empty{opacity:.45}
 #zone{position:absolute;left:0;top:0;bottom:0;width:50%;z-index:3;touch-action:none}
 #stick{position:absolute;width:150px;height:150px;margin:-75px 0 0 -75px;border-radius:50%;z-index:4;pointer-events:none;background:rgba(255,250,242,.14);box-shadow:inset 0 0 0 3px rgba(255,250,242,.7);transition:opacity .2s,box-shadow .2s}
-#stick.max{box-shadow:inset 0 0 0 4px #ff8a3c,0 0 22px rgba(255,120,40,.5)}
+
 #knob{position:absolute;left:50%;top:50%;width:60px;height:60px;margin:-30px 0 0 -30px;border-radius:50%;background:var(--white);box-shadow:0 4px 0 rgba(90,40,10,.3)}
 #arm{right:calc(6px + env(safe-area-inset-right,0px));bottom:calc(8px + env(safe-area-inset-bottom,0px));width:124px;height:206px}
 #fire{position:absolute;right:2px;bottom:18px;width:120px;height:120px;border-radius:50%;border:none;padding:0;background:rgba(20,18,14,.26);box-shadow:inset 0 0 0 1.5px rgba(255,250,242,.3);pointer-events:auto;cursor:pointer;touch-action:none;transition:transform .07s,background .07s}
@@ -100,7 +100,7 @@ button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
 #fire.empty .ammo{color:var(--hot)}
 #fire.empty .ico{opacity:.45}
 #swap{position:absolute;left:4px;top:0;width:54px;height:54px;border-radius:50%;border:none;background:rgba(20,18,14,.26);box-shadow:inset 0 0 0 1.5px rgba(255,250,242,.35);padding:0;pointer-events:auto;cursor:pointer;touch-action:none;display:grid;place-items:center}
-#swap .ico{width:26px;height:26px;color:var(--white);margin-top:-8px}
+#swap .ico{width:30px;height:30px;color:var(--white);margin:0}
 #swap span{position:absolute;bottom:7px;left:0;right:0;text-align:center;font:900 9px/1 var(--f-ui);letter-spacing:.14em;color:var(--white)}
 #wname{position:absolute;right:-12px;bottom:0;width:152px;text-align:center;font:900 10px/1 var(--f-ui);letter-spacing:.14em;color:var(--white);white-space:nowrap;text-shadow:0 1px 0 rgba(90,40,10,.4)}
 .overlay{position:absolute;inset:0;z-index:20;display:grid;place-items:center;background:rgba(214,140,82,.45);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));overflow:auto}
@@ -147,7 +147,7 @@ button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
   <div class="hud" id="xh" hidden><svg viewBox="0 0 40 40"><g class="g"><path d="M20 10v7M20 23v7M10 20h7M23 20h7"/></g><g class="r"><path d="M20 8v8M20 24v8M8 20h8M24 20h8"/><circle cx="20" cy="20" r="2.2"/></g></svg></div>
   <div class="hud" id="thr"><button id="thrUp" aria-label="Przyspiesz"><svg viewBox="0 0 40 40"><path d="M8 25l12-12 12 12" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button id="thrDn" aria-label="Zwolnij"><svg viewBox="0 0 40 40"><path d="M8 15l12 12 12-12" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
   <div class="hud" id="arm">
-    <button id="swap" aria-label="Zmień broń"><svg class="ico" id="swapIco" viewBox="0 0 64 64"></svg><span>ZMIEŃ</span></button>
+    <button id="swap" aria-label="Zmień broń"><svg class="ico" id="swapIco" viewBox="0 0 64 64"></svg></button>
     <button id="flareBtn" aria-label="Flary"><svg viewBox="0 0 40 40" fill="currentColor"><path d="M20 3l3 10 9-6-6 9 10 3-10 3 6 9-9-6-3 10-3-10-9 6 6-9-10-3 10-3-6-9 9 6z"/><circle cx="20" cy="19" r="3.5" fill="#2a2620"/></svg><span id="flN">16</span></button>
     <button id="fire" aria-label="Ogień">
       <svg class="ring" viewBox="0 0 120 120"><circle cx="60" cy="60" r="54" fill="none" stroke="rgba(255,250,242,.25)" stroke-width="6"/><circle id="ammoRing" cx="60" cy="60" r="54" fill="none" stroke="#fffaf2" stroke-width="6" stroke-linecap="round" stroke-dasharray="339.3" stroke-dashoffset="0"/></svg>
@@ -161,18 +161,7 @@ button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
     <div class="card">
       <h1 class="logo">brrrt</h1>
       <div class="sub">A-10 · GAU-8 · T-55</div>
-      <div class="rules">
-        <span class="chip">Lewa strona: joystick</span>
-        <span class="chip">Joystick: góra = nos w górę (pętla!), dół = nurkowanie</span>
-        <span class="chip">Strzałki: przyspiesz / zwolnij</span>
-        <span class="chip">ZMIEŃ: minigun / rakiety / Maverick</span>
-        <span class="chip">Zielony dym: zrzut z Maverickami</span>
-        <span class="chip">FLARY gubią rakiety SAM</span>
-        <span class="chip">Cel: SAM-y ■, artyleria ● i sztab ★</span>
-        <span class="chip">Czerwony dym: apteczka</span>
-      </div>
       <button class="cta" id="go">START</button>
-      <div class="hint" id="hint">Czołgi strzelają. Pilnuj paska kadłuba.</div>
     </div>
   </div>
   <div class="overlay" id="win" hidden>
@@ -1470,8 +1459,8 @@ function updObj(){const sam=sites.filter(q=>!q.hq&&!q.art),art=sites.filter(q=>q
   if(left===0&&!won){won=true;setTimeout(()=>{if(!PL.dead){$('win').hidden=false;Wp.fire=false;setBrrr(false);}},2600);}}
 let won=false;
 const cmpEl=document.getElementById('cmp'),cmpG=cmpEl.getContext('2d');const CMPL=['N','NE','E','SE','S','SW','W','NW'];let cmpLast='';
-function cmpIcon(g,kind,x,y,sc,al){g.save();g.globalAlpha=al;g.translate(x,y);g.scale(sc,sc);g.lineWidth=2.5;g.strokeStyle='rgba(255,250,242,.9)';
-  const col={sam:'#ff3b2b',art:'#ff3b2b',hq:'#ff2a1a',tank:'#ffa23a',tower:'#ff7a3a',hom:'#4cff7a',med:'#ff4d6d'}[kind];g.fillStyle=col;g.shadowColor=col;g.shadowBlur=14;g.beginPath();
+function cmpIcon(g,kind,x,y,sc,al){g.save();g.globalAlpha=al*.85;g.translate(x,y);g.scale(sc,sc);g.lineWidth=2;g.strokeStyle='rgba(255,250,242,.7)';
+  const col={sam:'#c9483b',art:'#c9483b',hq:'#c23a2e',tank:'#d08a4a',tower:'#c96e45',hom:'#4fa86a',med:'#c45a68'}[kind];g.fillStyle=col;g.shadowBlur=0;g.beginPath();
   if(kind==='hq'){for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,r=i%2?7:16;g.lineTo(Math.cos(a)*r,Math.sin(a)*r);}g.closePath();}
   else if(kind==='sam')g.rect(-9,-9,18,18);
   else if(kind==='art')g.arc(0,0,10,0,TAU);
@@ -1681,7 +1670,6 @@ function stickHome(){stick.cx=Math.max(96,96+safeL());stick.cy=H-Math.max(96,96+
 function stickMove(px,py){let dx=px-stick.cx,dy=py-stick.cy;const d=Math.hypot(dx,dy);if(d>SR){dx*=SR/d;dy*=SR/d;}stick.x=dx/SR;stick.y=dy/SR;knob.style.transform=`translate(${dx}px,${dy}px)`;}
 zone.addEventListener('pointerdown',e=>{e.preventDefault();if(stick.id!==null)return;initAudio();stick.id=e.pointerId;try{zone.setPointerCapture(e.pointerId);}catch(_){}
   const r=gameEl.getBoundingClientRect();const px=e.clientX-r.left,py=e.clientY-r.top;
-  if(Math.hypot(px-stick.cx,py-stick.cy)>80){stick.cx=clamp(px,76,r.width-76);stick.cy=clamp(py,76,r.height-76);stickEl.style.left=stick.cx+'px';stickEl.style.top=stick.cy+'px';}
   stickEl.style.opacity=1;stickMove(px,py);});
 zone.addEventListener('pointermove',e=>{if(e.pointerId!==stick.id)return;e.preventDefault();const r=gameEl.getBoundingClientRect();stickMove(e.clientX-r.left,e.clientY-r.top);});
 const stickUp=e=>{if(e.pointerId!==stick.id)return;stick.id=null;stick.x=0;stick.y=0;stickHome();};
@@ -1733,7 +1721,7 @@ function updOverlay(){
   else lk.hidden=true;
   // strzałka do zrzutu
   const cm=crates.find(c=>c.type==='hom'),ch=crates.find(c=>c.type==='med');
-  for(let ai=0;ai<2;ai++){const ar=$(ai?'arrow2':'arrow');const c=ai?ch:cm;
+  for(let ai=0;ai<2;ai++){const ar=$(ai?'arrow2':'arrow');const c=null;
   if(c&&running&&!PL.dead){const p=screenPos(c.x,c.y+2,c.z);const m=40;const inside=p.z<1&&p.x>m&&p.x<W-m&&p.y>m&&p.y<H-m;
     if(inside){ar.hidden=true;}else{const pd=dirScreen(c.x,c.y,c.z);let dx=pd.x-W/2,dy=pd.y-H/2;const a=Math.atan2(dy,dx);const k=Math.min((W/2-m)/Math.abs(Math.cos(a)||1e-6),(H/2-m)/Math.abs(Math.sin(a)||1e-6));
       ar.hidden=false;ar.style.transform=`translate(${W/2+Math.cos(a)*k-22}px,${H/2+Math.sin(a)*k-22}px)`;ar.querySelector('.pt').style.transform=`rotate(${a}rad)`;}}
@@ -1778,7 +1766,7 @@ function update(dt){
     FQ.normalize();FW.set(1,0,0).applyQuaternion(FQ);FU.set(0,1,0).applyQuaternion(FQ);
     // prędkość: przepustnica + grawitacja (wznoszenie zwalnia, nurkowanie przyspiesza)
     const vT=P.thr>0?36+24*P.thr:36+10*P.thr;P.v+=(vT-P.v)*(1-Math.exp(-dt*.6));P.v-=8*FW.y*dt;P.v=clamp(P.v,22,90);
-    boost=clamp(P.thr,0,1)*clamp((P.v-32)/16,0,1);stickEl.classList.toggle('max',thrIn>0);
+    boost=clamp(P.thr,0,1)*clamp((P.v-32)/16,0,1);
     P.x+=FW.x*P.v*dt;P.y+=FW.y*P.v*dt;P.z+=FW.z*P.v*dt;P.vy=FW.y*P.v;
     if(FW.x*FW.x+FW.z*FW.z>.004)P.a=Math.atan2(FW.z,FW.x);P.pitch=Math.asin(clamp(FW.y,-1,1));
     if(agl>MAXALT)P.y=gH+MAXALT;
